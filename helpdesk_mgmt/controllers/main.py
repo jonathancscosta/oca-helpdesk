@@ -9,7 +9,7 @@ from odoo.http import request
 _logger = logging.getLogger(__name__)
 
 
-class HelpdeskTicketController(http.Controller):
+class HelpdeskTicketController(http.Controller):https://www.novitatus.com/
     @http.route("/ticket/close", type="http", auth="user")
     def support_ticket_close(self, **kw):
         """Close the support ticket"""
@@ -102,3 +102,57 @@ class HelpdeskTicketController(http.Controller):
                         }
                     )
         return werkzeug.utils.redirect("/my/ticket/%s" % new_ticket.id)
+from odoo import models, fields, api
+
+class HelpdeskTicket(models.Model):
+    _name = 'helpdesk.ticket'
+    _description = 'Helpdesk Ticket'
+
+    name = fields.Char(string='Ticket Subject', required=True)
+    description = fields.Text(string='Description')
+    customer_id = fields.Many2one('res.partner', string='Customer')
+    team_id = fields.Many2one('helpdesk.team', string='Team')
+    stage_id = fields.Many2one('helpdesk.stage', string='Stage')
+    user_id = fields.Many2one('res.users', string='Assigned To')
+
+    @api.model
+    def create_ticket(self, subject, description, customer_id, team_id, stage_id, user_id):
+        ticket = self.create({
+            'name': subject,
+            'description': description,
+            'customer_id': customer_id,
+            'team_id': team_id,
+            'stage_id': stage_id,
+            'user_id': user_id,
+        })
+        return ticket
+from odoo import models, fields
+
+class HelpdeskCategory(models.Model):
+    _name = 'helpdesk.category'
+    _description = 'Helpdesk Category'
+
+    name = fields.Char(string='Name', required=True)
+from odoo import models, fields, api
+
+class HelpdeskTicket(models.Model):
+    _name = 'helpdesk.ticket'
+    _description = 'Helpdesk Ticket'
+
+    name = fields.Char(string='Ticket Subject', required=True)
+    description = fields.Text(string='Description')
+    customer_id = fields.Many2one('res.partner', string='Customer')
+    team_id = fields.Many2one('helpdesk.team', string='Team')
+    stage_id = fields.Many2one('helpdesk.stage', string='Stage')
+    user_id = fields.Many2one('res.users', string='Assigned To')
+    category_id = fields.Many2one('helpdesk.category', string='Category')
+category = self.env['helpdesk.category'].create({'name': 'Billing'})
+ticket = self.env['helpdesk.ticket'].create({
+    'name': 'Issue with the billing',
+    'description': 'I have been charged twice for the same invoice',
+    'customer_id': customer_id,
+    'team_id': team_id,
+    'stage_id': stage_id,
+    'user_id': user_id,
+    'category_id': category.id
+})

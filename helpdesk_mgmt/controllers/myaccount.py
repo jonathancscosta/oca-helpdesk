@@ -127,3 +127,12 @@ class CustomerPortalHelpdesk(CustomerPortal):
             values["success"] = kwargs["success"]
 
         return values
+ticket = self.env['helpdesk.ticket'].create({
+    'name': 'Issue with the billing',
+    'description': 'I have been charged twice for the same invoice',
+    'customer_id': customer_id,
+    'team_id': team_id,
+    'stage_id': stage_id,
+    'user_id': user_id,
+    'category_id': category.id
+})
